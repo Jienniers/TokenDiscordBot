@@ -135,7 +135,8 @@ public class Events extends ListenerAdapter {
     }
 
     private void storeDatainDatabase(ButtonInteractionEvent event, TextChannel newchannel, LocalDateTime currenttime){
-        String insertQuery = "INSERT INTO DiscordTicketData (GuildID, TicketChannelID, TicketCreatorID, TimeCreated, TicketState) VALUES (?, ?, ?, ?, ?)";
+        String sqlTable = config().getProperty("sql.Table");
+        String insertQuery = "INSERT INTO " + sqlTable + " (GuildID, TicketChannelID, TicketCreatorID, TimeCreated, TicketState) VALUES (?, ?, ?, ?, ?)";
         try (
                 Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
                 PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)
@@ -182,8 +183,9 @@ public class Events extends ListenerAdapter {
                     }
                     break;
                 case "close":
+                    String sqlTable = config().getProperty("sql.Table");
                     ticketChannels.remove(event.getChannel().getId());
-                    String insertQuery = "Update DiscordTicketData SET TicketState = (?) Where TicketChannelID = (?);";
+                    String insertQuery = "Update " + sqlTable + " SET TicketState = (?) Where TicketChannelID = (?);";
                     try (
                             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
                             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)
