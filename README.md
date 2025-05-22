@@ -1,61 +1,92 @@
+# 🤖 Discord Token Bot
 
-# Discord Token Bot
+A feature-rich Discord bot designed to streamline support through automated ticket creation and management within Discord servers.
 
-A Discord Bot for creating ticket channels inside discord severs.
-## Requirements
-you must created a `.env` file with the following variables.
-```
+> ⚠️ **Project Status: Not Actively Maintained**
+>
+> This project is no longer actively maintained. It remains public for learning, reference, or modification by others. Some parts of the code may be outdated or include minor bugs.
+
+---
+
+## 📦 Requirements
+
+Before running the bot, ensure you have the following setup:
+
+### 🔐 `.env` File
+
+Create a `.env` file in the root directory with the following variables:
+
+```env
 TOKEN="Your Discord Bot Token"
 JDBC_URL="Your JDBC URL"
-SQL_Username = "Your SQL Username"
-SQL_Password = "Your SQL Password"
-
+SQL_Username="Your SQL Username"
+SQL_Password="Your SQL Password"
 ```
 
-And you must have SQL installed and running. You can download mysql Community from [here](@https://dev.mysql.com/downloads/).
+> 💡 Make sure your SQL server is up and running. You can download MySQL Community Edition [here](https://dev.mysql.com/downloads/).
 
-# Config
-you can edit all the configurations in ``bot.config``.\
-\
-```bot.TicketChannelID``` this is your Channel id where the ticket embed and button would be sent.\
-\
-``bot.UserRoleID`` is the User ID of the user who's allowed to view the tickets and access them when they are first created and, is usually admin.\
-\
-``bot.PingRoleID`` is the role ID who would be pinged after the ticket has been created.
+---
 
-``sql.Table`` is the SQL table which would be used create the SQL table by the following command:
+## ⚙️ Configuration
+
+Edit the `bot.config` file to customize your bot:
+
+* `bot.TicketChannelID` → Channel ID where the embed and ticket creation button will appear.
+* `bot.UserRoleID` → Role ID allowed to view and manage tickets (usually an admin).
+* `bot.PingRoleID` → Role ID to be pinged when a new ticket is created.
+* `sql.Table` → Name of the SQL table where ticket data will be stored.
+
+### 🗃️ SQL Table Schema
+
+Use the following SQL command to create the required table:
+
+```sql
+CREATE TABLE discordticketdata (
+  GuildID BIGINT,
+  TicketChannelID BIGINT,
+  TicketCreatorID BIGINT,
+  TimeCreated DATETIME,
+  TicketState VARCHAR(50)
+);
 ```
-Create table discordticketdata(
-	GuildID long,
-    TicketChannelID long,
-    TicketCreatorID long,
-    TimeCreated datetime,
-    TicketState Varchar(50)
-)
-```
-### SQL Data Information
 
-| Column | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `GuildID` | `long` | Is the ID of the server in which the ticket was created. |
-| `TicketChannelID` | `long` | Is the ID of the ticket channel |
-| `TicketCreatorID` | `long` | Is the ID of the user who created the ticket |
-| `TimeCreated` | `datetime` | Is the Time when the ticket was created. |
-| `TicketState` | `varchar(50)` | Indicates the state of the ticket. For example when its ``1`` it means that the ticket is open and when its ``0`` it means that the ticket is closed. |
+#### 📊 Data Columns
 
+| Column            | Type          | Description                                              |
+| ----------------- | ------------- | -------------------------------------------------------- |
+| `GuildID`         | `BIGINT`      | Discord server ID where the ticket was created           |
+| `TicketChannelID` | `BIGINT`      | ID of the generated ticket channel                       |
+| `TicketCreatorID` | `BIGINT`      | ID of the user who created the ticket                    |
+| `TimeCreated`     | `DATETIME`    | Timestamp of when the ticket was created                 |
+| `TicketState`     | `VARCHAR(50)` | State of the ticket (`1` for open, `0` for closed, etc.) |
 
-# Commands
+---
 
-**Note: These commands should only be runned inside the ticket channels, Which were created by this bot.**
+## 💬 Bot Commands
 
-| Column | Parameter     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `/add` | `user` | Adds the parameter user to view and access the current ticket channel. |
-| `/close` |  | Closes the current ticket channel and deletes it. |
-| `/remove` | `user` | Removes the the parameter user from the ticket channel, which makes it unable for him to view or access the current ticket channel. |
-| `/rename` | `string` | Renames the current ticket channel to the paramter string name. |
+**Note:** These commands should only be used within channels created by this bot.
 
+| Command   | Parameters | Description                                                       |
+| --------- | ---------- | ----------------------------------------------------------------- |
+| `/add`    | `user`     | Grants the specified user access to the current ticket channel    |
+| `/remove` | `user`     | Revokes the specified user's access to the current ticket channel |
+| `/close`  | *(none)*   | Closes and deletes the current ticket channel                     |
+| `/rename` | `string`   | Renames the current ticket channel to the provided string         |
 
-## Support
+---
 
-If you encounter any issues or have suggestions for improvement, please submit an issue on the GitHub repository.
+## 🛠️ Developer Info
+
+* **Author**: [Jienniers](https://github.com/Jienniers)
+* **Repository**: [GitHub](https://github.com/Jienniers/TokenDiscordBot)
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## 🙋‍♀️ Feedback & Contributions
+
+Have suggestions or found a bug? Feel free to open an issue or submit a pull request!
+
